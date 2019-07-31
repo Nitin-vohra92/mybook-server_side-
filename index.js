@@ -22,6 +22,20 @@ app.get('/',(req,res)=>{
     })
 })
 
+app.get('/add', (req, res) => {
+    res.render('add')
+  })
+
+  app.post('/add',(req,res)=>{
+      Product.create({
+        name: req.body.name,
+        publishers: req.body.publishers,
+        condition:req.body.condition,
+        price:req.body.price,
+        address:req.body.address
+      })
+      res.redirect('/index')
+  })
 
 
 app.listen(8060)
