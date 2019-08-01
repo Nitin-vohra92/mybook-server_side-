@@ -34,7 +34,7 @@ app.get('/add', (req, res) => {
         price:req.body.price,
         address:req.body.address
       })
-      res.redirect('/index')
+      res.redirect('/add')
   })
 
 
