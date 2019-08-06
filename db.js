@@ -15,6 +15,10 @@ const User = db.define('users', {
       autoIncrement: true,
      
     },
+    Username: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     FullName: {
       type: Sequelize.STRING,
       allowNull: false
@@ -64,6 +68,7 @@ const User = db.define('users', {
      }
   })
   
+
   db.sync()
     .then(()=>console.log('database synced'))
     .catch((err)=>console.log("error"))
