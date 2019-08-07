@@ -23,7 +23,7 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     User.findOne({where : {username:username,password:password}})
     .then(users=>{
-      
+
     })
   }
 ));
@@ -35,6 +35,7 @@ app.use(session({
   resave: false,
   cookie: { secure: false }
 }))
+
 
 
 app.use(passport.initialize())
