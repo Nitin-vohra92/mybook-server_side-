@@ -37,7 +37,6 @@ const User = db.define('users', {
     }
   })
 
-
   const Product = db.define('products',{
     id: {
         type: Sequelize.INTEGER,
