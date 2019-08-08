@@ -13,23 +13,12 @@ const User = db.define('users', {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      allowNULL:true
      
     },
-    Username: {
+    username: {
       type: Sequelize.STRING,
       allowNull: false
-    },
-    FullName: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    LastName: {
-        type: Sequelize.STRING,
-        allowNULL:false
-    },
-    email_id: {
-        type: Sequelize.STRING,
-        allowNULL:true
     },
     password: {
         type: Sequelize.STRING,

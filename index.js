@@ -4,6 +4,7 @@ const Product = require('./db').Product
 const User = require('./db').User
 const path = require('path')
 const hbs = require('hbs')
+const bodyParser=require("body-parser")
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
@@ -14,19 +15,51 @@ app.set('views', __dirname + '/views')
 
 hbs.registerPartials(path.join(__dirname, '/partials'))
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static(__dirname + '/public'))
 
 
-passport.use(new LocalStrategy(
+passport.use('local',new LocalStrategy(
   function (username, password, done) {
-    User.findOne({ where: { username: username, password: password } })
-      .then(users => {
+    User.findOne({
+      where: {username: username }
+    }).then(function (user) {
+      if (user) {
+        return done(null, user,{
+          message: 'Already exists'
+        });
+      }
+      else{
+        var data={
+          username:username,
+          password:password
+        };
+      
+        User.create(data).then(function(newUser, created) {
+ 
+            if (!newUser) {
+ 
+                return done(null, false);
+ 
+            }
+ 
+            if (newUser) {
+ 
+                return done(null, newUser);
+ 
+            }
+ 
+        });
+ 
+    }
+ 
+})
+  }));
 
-      })
-  }
-));
+  
 
 
 app.use(session({
@@ -39,7 +72,7 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
-
+/*
 passport.serializeUser((user, done) => {
   return done(null, user)
 })
@@ -47,7 +80,19 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   return done(null, user)
 })
+*/
+//serialize
+passport.serializeUser(function(user, done) {
+ 
+  done(null, user.id);
 
+});
+
+// deserialize user 
+passport.deserializeUser(function(user, done) {
+ 
+  return done(null, user)
+})
 
 app.get('/', (req, res) => {
   Product.findAll()
@@ -79,14 +124,16 @@ app.get('/', (req, res) => {
   res.render('index', { user: req.user })
 })
 
-app.get('/login', (req, res) => {
-  res.render('login')
-})
 
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login'
 }))
+
+app.get('/login', (req, res) => {
+  res.render('login')
+})
+
 
 
 
