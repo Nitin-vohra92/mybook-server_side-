@@ -25,7 +25,7 @@ app.use(express.static(__dirname + '/public'))
 passport.use('local',new LocalStrategy(
   function (username, password, done) {
     User.findOne({
-      where: {username: username }
+      where: {username: username}
     }).then(function (user) {
       if (user) {
         return done(null, user,{
@@ -84,7 +84,7 @@ passport.deserializeUser((user, done) => {
 //serialize
 passport.serializeUser(function(user, done) {
  
-  done(null, user.id);
+  return done(null, user);
 
 });
 
@@ -124,18 +124,14 @@ app.get('/', (req, res) => {
   res.render('index', { user: req.user })
 })
 
+app.get('/login', (req, res) => {
+  res.render('login')
+})
 
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login'
 }))
-
-app.get('/login', (req, res) => {
-  res.render('login')
-})
-
-
-
 
 app.listen(8060)
 
