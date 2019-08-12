@@ -58,8 +58,8 @@ passport.use('local',new LocalStrategy(
  
 })
   }));
-
-  
+var a={ab:2};
+  console.log("USer"+typeof(a));
 
 
 app.use(session({
