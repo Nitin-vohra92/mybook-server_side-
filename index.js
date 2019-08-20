@@ -22,6 +22,9 @@ app.use(express.json())
 app.use(express.static(__dirname + '/public'))
 
 
+
+
+
 passport.use('local',new LocalStrategy(
   function (username, password, done) {
     User.findOne({
@@ -58,9 +61,6 @@ passport.use('local',new LocalStrategy(
  
 })
   }));
-var a={ab:2};
-  console.log("USer"+typeof(a));
-
 
 app.use(session({
   secret: 'nobody can guess',
