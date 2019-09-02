@@ -53,14 +53,18 @@ const User = db.define('users', {
      address: {
          type: Sequelize.TEXT,
          allowNULL: false
-     }
+     },
+     incart: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+      allowNULL:false
+    }
   })
   
-
   db.sync()
-    .then(()=>console.log('database synced'))
-    .catch((err)=>console.log("error"))
+  .then(()=>console.log('database synced'))
+  .catch((err)=>console.log("error"))
 
-  exports = module.exports = {
-      User, Product
-  }
+exports = module.exports = {
+    User, Product
+}

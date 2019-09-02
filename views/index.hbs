@@ -53,6 +53,7 @@
                     <div class="carousel-caption d-none d-md-block">
                         <h3 style="color: white;">WHY US ?</h3>
                         <p style="color: white">WE PROVIDE BOOKS AT EFFECTIVE PRICE AS LOW AS 30%</p>
+   
                     </div>
                 </div>
 
@@ -109,7 +110,10 @@
 
 
             <div class="card-footer bg-transparent border-dark d-flex bd-highlight mb-3">
-                <a href="#" class="btn btn-primary btn-lg mr-auto p-2 bd-highlight">Buy Now</a>
+                <form action="/cart" method="POST">
+                    <button name="name" type="submit" value={{product.name}} class="btn btn-primary btn-lg mr-auto p-2 bd-highlight">Buy Now</button>
+                </form>
+                
                 <a href="#" class="btn btn-primary btn-lg p-2 bd-highlight">Rent Now</a>
             </div>
 

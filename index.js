@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const Product = require('./db').Product
 const User = require('./db').User
+//const Cart = require('./db').Cart
+
 const path = require('path')
 const hbs = require('hbs')
 const bodyParser=require("body-parser")
@@ -108,6 +110,14 @@ app.get('/add', (req, res) => {
   res.render('add')
 })
 
+
+app.get('/cart',(req,res)=>{
+  Product.findAll({where:{incart:{$gt : 0}}}).
+  then(function(products){
+  res.render('cart',{ products })
+})
+})
+
 app.post('/add', (req, res) => {
   Product.create({
     name: req.body.name,
@@ -118,6 +128,22 @@ app.post('/add', (req, res) => {
   })
   res.redirect('/add')
 })
+
+
+
+app.post('/cart',(req,res)=>{
+  Product.findOne({ where: { name: req.name } })
+  .then( function (product) {
+    // Check if record exists in db
+    if (product) {
+      product.update({
+       incart: incart+1
+      })
+      }
+    })
+    res.redirect('/');
+  })
+  
 
 
 app.get('/', (req, res) => {
@@ -134,69 +160,3 @@ app.post('/login', passport.authenticate('local', {
 }))
 
 app.listen(8060)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
