@@ -3,7 +3,8 @@ const app = express()
 const Product = require('./db').Product
 const User = require('./db').User
 //const Cart = require('./db').Cart
-
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 const path = require('path')
 const hbs = require('hbs')
 const bodyParser=require("body-parser")
@@ -105,14 +106,13 @@ app.get('/', (req, res) => {
 })
 
 
-
 app.get('/add', (req, res) => {
   res.render('add')
 })
 
 
 app.get('/cart',(req,res)=>{
-  Product.findAll({where:{incart:{$gt : 0}}}).
+  Product.findAll({where:{incart:{ [Op.gt] : 1 }}}).
   then(function(products){
   res.render('cart',{ products })
 })
@@ -132,15 +132,9 @@ app.post('/add', (req, res) => {
 
 
 app.post('/cart',(req,res)=>{
-  Product.findOne({ where: { name: req.name } })
-  .then( function (product) {
-    // Check if record exists in db
-    if (product) {
-      product.update({
-       incart: incart+1
-      })
-      }
-    })
+  Product.update({ incart:Sequelize.literal('incart+1')},
+     {where: { name:req.body.name } })
+  
     res.redirect('/');
   })
   
