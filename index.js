@@ -7,7 +7,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const path = require('path')
 const hbs = require('hbs')
-const bodyParser=require("body-parser")
+const bodyParser = require("body-parser")
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const session = require('express-session')
@@ -28,41 +28,41 @@ app.use(express.static(__dirname + '/public'))
 
 
 
-passport.use('local',new LocalStrategy(
+passport.use('local', new LocalStrategy(
   function (username, password, done) {
     User.findOne({
-      where: {username: username}
+      where: { username: username }
     }).then(function (user) {
       if (user) {
-        return done(null, user,{
+        return done(null, user, {
           message: 'Already exists'
         });
       }
-      else{
-        var data={
-          username:username,
-          password:password
+      else {
+        var data = {
+          username: username,
+          password: password
         };
-      
-        User.create(data).then(function(newUser, created) {
- 
-            if (!newUser) {
- 
-                return done(null, false);
- 
-            }
- 
-            if (newUser) {
- 
-                return done(null, newUser);
- 
-            }
- 
+
+        User.create(data).then(function (newUser, created) {
+
+          if (!newUser) {
+
+            return done(null, false);
+
+          }
+
+          if (newUser) {
+
+            return done(null, newUser);
+
+          }
+
         });
- 
-    }
- 
-})
+
+      }
+
+    })
   }));
 
 app.use(session({
@@ -85,15 +85,15 @@ passport.deserializeUser((user, done) => {
 })
 */
 //serialize
-passport.serializeUser(function(user, done) {
- 
+passport.serializeUser(function (user, done) {
+
   return done(null, user);
 
 });
 
 // deserialize user 
-passport.deserializeUser(function(user, done) {
- 
+passport.deserializeUser(function (user, done) {
+
   return done(null, user)
 })
 
@@ -111,11 +111,11 @@ app.get('/add', (req, res) => {
 })
 
 
-app.get('/cart',(req,res)=>{
-  Product.findAll({where:{incart:{ [Op.gt] : 1 }}}).
-  then(function(products){
-  res.render('cart',{ products })
-})
+app.get('/cart', (req, res) => {
+  Product.findAll({ where: { incart: { [Op.gt]: 1 } } }).
+    then(function (products) {
+      res.render('cart', { products })
+    })
 })
 
 app.post('/add', (req, res) => {
@@ -131,13 +131,13 @@ app.post('/add', (req, res) => {
 
 
 
-app.post('/cart',(req,res)=>{
-  Product.update({ incart:Sequelize.literal('incart+1')},
-     {where: { name:req.body.name } })
-  
-    res.redirect('/');
-  })
-  
+app.post('/cart', (req, res) => {
+  Product.update({ incart: Sequelize.literal('incart+1') },
+    { where: { name: req.body.name } })
+
+  res.redirect('/');
+})
+
 
 
 app.get('/', (req, res) => {
