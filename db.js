@@ -22,7 +22,9 @@ const User = db.define('users', {
   password: {
     type: Sequelize.STRING,
     allowNULL: false
-  }
+  },
+  firstName: Sequelize.STRING,
+  lastName: Sequelize.STRING
 })
 
 const Product = db.define('products', {
