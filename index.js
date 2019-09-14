@@ -147,7 +147,9 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login')
 })
-
+app.get('/signup',(req,res)=>{
+  res.render('signup')
+})
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login'
