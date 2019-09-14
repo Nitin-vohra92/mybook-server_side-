@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const Product = require('./db').Product
 const User = require('./db').User
-//const Cart = require('./db').Cart
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const path = require('path')
@@ -18,52 +17,13 @@ app.set('views', __dirname + '/views')
 
 hbs.registerPartials(path.join(__dirname, '/partials'))
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static(__dirname + '/public'))
 
 
-
-
-
-passport.use('local', new LocalStrategy(
-  function (username, password, done) {
-    User.findOne({
-      where: { username: username }
-    }).then(function (user) {
-      if (user) {
-        return done(null, user, {
-          message: 'Already exists'
-        });
-      }
-      else {
-        var data = {
-          username: username,
-          password: password
-        };
-
-        User.create(data).then(function (newUser, created) {
-
-          if (!newUser) {
-
-            return done(null, false);
-
-          }
-
-          if (newUser) {
-
-            return done(null, newUser);
-
-          }
-
-        });
-
-      }
-
-    })
-  }));
 
 app.use(session({
   secret: 'nobody can guess',
@@ -75,6 +35,26 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+
+passport.use('local', new LocalStrategy(
+  function (username, password, done) {
+    User.findOne({
+      where: { username: username }
+    }).then(function (user) {
+      if (!user) {
+        return done(null,false,{message:"No such user"})
+      }
+      if(user.password !== password) {
+        return res.done(null,false,{message:"Wrong password"})
+      }
+      return done(null,user)
+    }).catch((err)=>{
+      return done(err)
+    })
+    }))
+       
+
 /*
 passport.serializeUser((user, done) => {
   return done(null, user)
@@ -87,22 +67,38 @@ passport.deserializeUser((user, done) => {
 //serialize
 passport.serializeUser(function (user, done) {
 
-  return done(null, user);
+  return done(null, user.username);
 
 });
 
 // deserialize user 
-passport.deserializeUser(function (user, done) {
-
-  return done(null, user)
+passport.deserializeUser(function (username, done) {
+  User.findOne({
+    username:username
+  }).then((user)=>{
+    if(!user){
+      return done(new Error("No such user"))
+    }
+    return done(null,user)
+  }).catch((err)=>{
+    done(err)
+  })
+  
 })
 
 app.get('/', (req, res) => {
-  Product.findAll()
+  if(req.user)
+  {
+    Product.findAll()
     .then(function (products) {
       res.render('index', { products })
 
     })
+  }
+  else{
+    res.redirect('/signup')
+  }
+ 
 })
 
 
@@ -112,7 +108,7 @@ app.get('/add', (req, res) => {
 
 
 app.get('/cart', (req, res) => {
-  Product.findAll({ where: { incart: { [Op.gt]: 1 } } }).
+  Product.findAll({ where: { incart: { [Op.gt]: 0 } } }).
     then(function (products) {
       res.render('cart', { products })
     })
@@ -133,17 +129,22 @@ app.post('/add', (req, res) => {
 
 app.post('/cart', (req, res) => {
   Product.update({ incart: Sequelize.literal('incart+1') },
-    { where: { name: req.body.name } })
+    { where: { name: req.body.name,
+               } })
 
   res.redirect('/');
 })
 
-
+/*
 
 app.get('/', (req, res) => {
+  if(req.user)
   res.render('index', { user: req.user })
+  else{
+    res.redirect('/login')
+  }
 })
-
+*/
 app.get('/login', (req, res) => {
   res.render('login')
 })
@@ -151,12 +152,12 @@ app.get('/signup',(req,res)=>{
   res.render('signup')
 })
 
-/*app.post('/login', passport.authenticate('local', {
+app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login'
 }))
-*/
 
+/*
 app.post('/login',(req,res)=>{
   User.findOne({
     where: {
@@ -174,7 +175,7 @@ app.post('/login',(req,res)=>{
   })
 })
 
-
+*/
 app.post('/signup',(req,res)=>{
   User.create({
     username:req.body.username,
