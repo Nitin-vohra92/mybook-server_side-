@@ -150,9 +150,40 @@ app.get('/login', (req, res) => {
 app.get('/signup',(req,res)=>{
   res.render('signup')
 })
-app.post('/login', passport.authenticate('local', {
+
+/*app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login'
 }))
+*/
+
+app.post('/login',(req,res)=>{
+  User.findOne({
+    where: {
+      username: req.body.username
+    }
+  }).then((user)=>{
+    if(!user){
+      return res.send("No such user")
+    }
+    if(user.password !== req.body.password){
+      return res.send("Wrong password")
+    }
+    return res.send("HEllo " + user.firstName )
+
+  })
+})
+
+
+app.post('/signup',(req,res)=>{
+  User.create({
+    username:req.body.username,
+    password:req.body.password,
+    firstName:req.body.firstName,
+    lastName:req.body.lastName
+  }).then((createdUser) => {
+    res.redirect('/login')
+  })
+})
 
 app.listen(8060)
