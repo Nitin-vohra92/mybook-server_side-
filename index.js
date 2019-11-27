@@ -1,3 +1,4 @@
+  
 const express = require('express')
 const app = express()
 const Product = require('./db').Product
@@ -29,7 +30,9 @@ app.use(session({
   secret: 'nobody can guess',
   saveUninitialized: true,
   resave: false,
-  cookie: { secure: false }
+  cookie: { secure: false,
+  maxAge:6000000 },
+  
 }))
 
 
@@ -59,7 +62,6 @@ passport.use('local', new LocalStrategy(
 passport.serializeUser((user, done) => {
   return done(null, user)
 })
-
 passport.deserializeUser((user, done) => {
   return done(null, user)
 })
@@ -131,12 +133,25 @@ app.post('/cart', (req, res) => {
   Product.update({ incart: Sequelize.literal('incart+1') },
     { where: { name: req.body.name,
                } })
-
   res.redirect('/');
 })
 
-/*
+app.get('/cart/delete/:name',(req,res)=>{
+Product.update({ incart: Sequelize.literal('incart-1') },
+{ where: { name: req.params.name,
+           } })
+res.redirect('/cart');
+})
 
+app.get('/cart/delete-all/:name',(req,res)=>{
+  Product.update({ incart: Sequelize.literal('0') },
+  { where: { name: req.params.name,
+             } })
+  res.redirect('/cart');
+  })
+  
+
+/*
 app.get('/', (req, res) => {
   if(req.user)
   res.render('index', { user: req.user })
@@ -154,8 +169,9 @@ app.get('/signup',(req,res)=>{
 
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/login'
+  failureRedirect: '/signup'
 }))
+
 
 /*
 app.post('/login',(req,res)=>{
@@ -171,10 +187,8 @@ app.post('/login',(req,res)=>{
       return res.send("Wrong password")
     }
     return res.send("HEllo " + user.firstName )
-
   })
 })
-
 */
 app.post('/signup',(req,res)=>{
   User.create({

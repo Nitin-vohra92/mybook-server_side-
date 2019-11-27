@@ -30,8 +30,8 @@
         </div>
         <div class="card-body">
             <blockquote class="blockquote mb-0">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite>
+                <p>I have always imagined that Paradise will be a kind of library.</p>
+                <footer class="blockquote-footer">Jorge Luis Borges
                 </footer>
             </blockquote>
         </div>
@@ -112,10 +112,12 @@
             <div class="card-footer bg-transparent border-dark d-flex bd-highlight mb-3">
                 <form action="/cart/" method="POST">
                     <input name="name" type="hidden" value="{{product.name}}"></input>
-                    <button type="submit" class="btn btn-primary btn-lg mr-auto p-2 bd-highlight">Buy Now</button>
+                    <div  style="display:flex;justify-content:center;">
+                    <button style="margin-left:25%;" type="submit" class="btn btn-primary btn-lg mr-auto p-2 bd-highlight" onclick="myFunction()">Add to Cart</button>
+                </div>
                 </form>
 
-                <a href="#" class="btn btn-primary btn-lg p-2 bd-highlight">Rent Now</a>
+               
             </div>
 
         </div>
@@ -128,6 +130,11 @@
 <script>
     var element = document.getElementById("home");
     element.classList.add("active");
+
+
+    function myFunction(){
+        alert("item added to cart");
+    }
 </script>
 
 </html>

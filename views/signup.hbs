@@ -5,25 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
+     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
 </head>
 <body>
-    <h2>Login</h2>
+    <h2>Signup</h2>
 
     <form action="/signup" method="POST">
-        <input placeholder="first Name" name="firstName">
-        <input placeholder="Last Name" name="lastName">
-        Username: <input placeholder="username" type="text" name="username">
-        <br>
-        Password: <input placeholder="password" type="password" name="password">
-        <br>
-        <input type="submit">
+            <div class="form-group" style="margin:40px;">
+    <label >First Name</label>
+    <input type="text" class="form-control" name="firstName"  placeholder="Enter first name">
+  </div>
+  <div class="form-group" style="margin:40px;">
+    <label >Last Name</label>
+    <input type="text" class="form-control" name="lastName"  placeholder="Enter last name">
+  </div>
+  <div class="form-group" style="margin:40px;">
+  <label >User name</label>
+    <input type="text" class="form-control" name="username"  placeholder="Enter username">
+    <small id="emailHelp" class="form-text text-muted">If password is wrong you will be directed to sign up</small>
+  </div>
+  <div class="form-group"  style="margin:40px;">
+    <label >Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password">
+  </div>
+  
+  <button  type="submit" style="margin: 40px;" class="btn btn-primary">Submit</button>
+
     </form>
     <br>
     <br>
 
     <form action="/login" method="GET">
-    Already signed in:
-    <input type="submit">
+        <label >Already signed in</label>
+    <button  type="submit" class="btn btn-primary">Click here</button>
+
     </form>
 </body>
 </html>

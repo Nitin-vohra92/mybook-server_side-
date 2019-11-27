@@ -59,8 +59,14 @@ const Product = db.define('products', {
     type: Sequelize.INTEGER,
     defaultValue: 0,
     allowNULL: false
+  },
+  amount: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNULL:false
   }
 })
+
 
 db.sync()
   .then(() => console.log('database synced'))

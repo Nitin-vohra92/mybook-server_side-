@@ -24,34 +24,56 @@
 <body>
     {{>navbar}}
     <br>
-    <div class="row ml-2 justify-content-sm-start">
-
+    <h1 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">List</h1>
+    
+<ul  class="list-group">
         {{#each products as |product| }}
-
-
-        <div class="card bg-light shadow-lg p-3 mb-5 bg-white rounded card border-dark  mb-3 mx-2 p-1" id="box_shadow"
-            style="width: 18rem; height: 31rem;">
-            <img src="https://www.adazing.com/wp-content/uploads/2019/02/open-book-clipart-06-1-300x300.png"
-                class="card-img-top product_image" alt="...">
-            <div class="card-body bg-transparent border-dark">
-                <h5 class="card-title product_name text-center">{{product.name}}</h5>
-                <h5 class="card-title product_name text-center">Rs.{{product.price}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted prodct_manufacturer text-center">{{product.publisher}}</h6>
-            </div>
-
-           
-
-        </div>
+<li class="list-group-item d-flex justify-content-between align-items-center">
+    {{product.name}} : Rs. {{product.price}} 
+    
+    <span class="badge badge-secondary badge-pill">
+        <a href="/cart/delete/{{product.name}}">hii
+         </a>
+    </span>
+    <span class="badge badge-secondary badge-pill">
+        <a href="/cart/delete-all/{{product.name}}">delete item</a>
+    </span>
+    <span class="badge badge-primary badge-pill">Number of items:  {{product.incart}}</span>
+  </li>
+      
 
         {{/each}}
+        
+</ul>
 
-    </div>
+<div style="display: flex;justify-content:space-between;margin:10%;font-family: Impact;font-size: x-large;">
+    <p>
+        total
+    </p>
+<ul id="myList" class="list-group" style="list-style: none;">
+
+</ul>
+
+</div>
+
+ 
     <br>
-   
+  
 
 
 </body>
-<script>
-    
-</script>
+
 </html>
+
+<script>
+    let a = 0;
+    {{#each products as |product| }}
+    a={{product.price}}*{{product.incart}}+a;
+    {{/each}}
+    console.log(a);
+
+var node = document.createElement("li");                 // Create a <li> node
+var textnode = document.createTextNode(a);         // Create a text node
+node.appendChild(textnode);                              // Append the text to <li>
+document.getElementById("myList").appendChild(node);  
+</script>
