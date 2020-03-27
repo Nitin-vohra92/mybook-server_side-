@@ -1,4 +1,4 @@
-# mybook-server_side-
+# my book store
 server side rendered
 
 # Motivation
